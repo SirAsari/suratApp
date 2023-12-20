@@ -44,7 +44,7 @@
                 <td>{{ $no++ }}</td>
                 <td>{{ $item->letter_code }}</td>
                 <td>{{ $item->name_type }}</td>
-                <td>{{ $item->letters->count() }}</td>
+                <td>{{ $item->letters->count() }}</td>  
              <td class="d-flex justify-content-center">
                 <a href="{{ route('letterType.edit', $item['id']) }}" class="btn btn-primary me-3">Edit</a>
 

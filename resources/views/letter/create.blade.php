@@ -34,6 +34,31 @@
     </div>
     <h5>Isi Surat</h5>
     <div id="editor"></div>
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Peserta (Ceklis jika "ya")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach ($gurus as $guru)
+    <tr>
+        <td>{{ $guru->name }}</td>
+        <td>
+            <input type="checkbox" name="recipients[]" value="{{ $guru->id }}">
+        </td>
+    </tr>
+@endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
     <button type="submit" class="btn btn-primary mt-3">Tambah Data</button>
     
 </form>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\letters;
 use Illuminate\Http\Request;
 use App\Models\letterTypes;
+use App\Models\User;
 
 class LettersController extends Controller
 {
@@ -34,10 +35,14 @@ class LettersController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $letterTypes = letterTypes::all(); 
-        return view('letter.create', compact('letterTypes'));
-    }
+{
+    $gurus = User::where('role', 'guru')->orderBy('name', 'ASC')->get();
+    $letterTypes = letterTypes::all(); 
+
+    return view('letter.create', compact('gurus', 'letterTypes'));
+}
+
+
 
     /**
      * Store a newly created resource in storage.
