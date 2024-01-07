@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\letterTypes;
+use App\Models\letters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +12,16 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     
+    public function index()
+{
+    $UserStaff = User::where('role', 'staff')->count();
+    $UserGuru = User::where('role', 'guru')->count();
+    $KlasifikasiSurat = letterTypes::count(); 
+    $SuratKeluar = letters::count();
+    
+    return view('user.dashboard', compact('UserStaff', 'UserGuru', 'KlasifikasiSurat', 'SuratKeluar'));
+}
+
     public function loginAuth(Request $request)
     {
         $request->validate([
@@ -25,10 +37,6 @@ class UserController extends Controller
         }
     }
     
-    public function Index()
-    {
-        return view('user.dashboard');
-    }
     public function tataUsahaIndex(Request $request)
 {
     $pagination = $request->input('pagination', 5); // Default pagination size is 5

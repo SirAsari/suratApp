@@ -1,5 +1,12 @@
 @extends('layouts.template')
 
+@section('styles')
+<style>
+    .tataUsahaContainer {
+        margin-left: 1.4rem;
+    }
+</style>
+@endsection
 @section('content')
 
 @if(Session::get('success'))
@@ -9,6 +16,7 @@
     <div class="alert alert-warning"> {{ Session::get('deleted') }} </div>
 @endif
 
+<div class="tataUsahaContainer">
 <h1 class="h3 mb-5 text-gray-800 mt-5">Data Tata Usaha</h1>
 <a href="{{ route('user.tataUsaha.create') }}"><button class="btn btn-success mb-4">Tambah Data</button></a>
 <div class="d-flex justify-content-start mb-3">
@@ -86,6 +94,9 @@
         {{ $Users->links() }}
     @endif
 </div>
+
+</div>
+
 
 <style>
     svg.h-5.w-5 {

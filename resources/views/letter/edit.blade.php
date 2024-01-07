@@ -1,47 +1,64 @@
 @extends('layouts.template')
 
 @section('content')
-<form action="{{ route('user.guru.update', $User['id']) }}" method="POST" class="card p-5">
+<form action="{{ route('letter.update', $letter->id) }}" method="POST" enctype="multipart/form-data" class="card p-5">
+
         @csrf
         @method('PATCH')
 
-        @if ($errors->any())
-        <ul class="alert alert-danger">
-            @foreach ($errors->all() as $error)    
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-        @endif
+        <div class="mb-3 row">
+            <label for="letter_perihal" class="col-sm-2 col-form-label">Perihal</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="letter_perihal" name="letter_perihal" value="{{ $letter->letter_perihal }}">
+            </div>
+        </div>
 
-    <div class="mb-3 row">
-        <label for="name" class="col-sm-2 col-form-label">Nama : </label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" value="{{ $User['name']}} ">
+        <div class="mb-3 row">
+            <label for="letter_type_id" class="col-sm-2 col-form-label">Klasifikasi Surat</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="letter_type_id" name="letter_type_id">
+                    @foreach($letter as $type)
+                        <option value="{{ $type->id }}" {{ $letter->letter_type_id == $type->id ? 'selected' : '' }}>{{ $type->name_type }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="email" class="col-sm-2 col-form-label">Email : </label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="email" name="email" value="{{ $User['email']}} ">
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="email" class="col-sm-2 col-form-label">Password : </label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="password" name="password">
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="type" class="col-sm-2 col-form-label">Role : </label>
-        <div class="col-sm-10">
-            <select class="form-select" id="role" name="role">
-                <option selected disabled hidden>Pilih</option>
-                <option value="staff" {{ $User['role'] == 'staff' ? 'selected' : '' }}>staff</option>
-                <option value="guru" {{ $User['role'] == 'guru' ? 'selected' : '' }}>guru</option>
-            </select>
-        </div>
-    </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Ubah Data</button>
-</form>
+        <!-- Other form fields for editing -->
+        
+        <!-- Recipients - Assuming recipients are checkboxes -->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">Recipients</label>
+            <div class="col-sm-10">
+                @foreach($allUsers as $user)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="recipients[]" value="{{ $user->id }}" {{ in_array($user->id, json_decode($letter->recipients, true) ?? []) ? 'checked' : '' }}>
+                        <label class="form-check-label">{{ $user->name }}</label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Attachment -->
+        <div class="mb-3 row">
+            <label for="lampiran" class="col-sm-2 col-form-label">Lampiran (Optional)</label>
+            <div class="col-sm-10">
+                <input type="file" class="form-control" id="lampiran" name="lampiran">
+            </div>
+        </div>
+
+        <!-- Notulis -->
+        <div class="mb-3 row">
+            <label for="notulis_id" class="col-sm-2 col-form-label">Notulis</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="notulis_id" name="notulis_id">
+                    @foreach($allUsers as $user)
+                        <option value="{{ $user->id }}" {{ $letter->notulis_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Update Data</button>
+    </form>
 @endsection

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('letters', function (Blueprint $table) {
             $table->id(); // primeri
             $table->unsignedBigInteger('letter_type_id');
-            $table->foreign('letter_type_id')->references('id')->on('letter_types');
+            $table->foreign('letter_type_id')->references('id')->on('letter_types')->constrained()->onDelete('cascade');
             $table->string('letter_perihal');
             $table->json('recipients');
             $table->text('content');

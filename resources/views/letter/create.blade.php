@@ -1,7 +1,13 @@
 @extends('layouts.template')
 
 @section('content')
-<form action="{{ route('user.guru.store') }}" method="POST" class="card p-5">
+<style>
+    .ck.ck-content {
+        height: 230px; 
+    }
+</style>
+
+<form action="{{ route('letter.store') }}" method="POST" class="card p-5">
     @csrf
 
     @if(Session::get('success'))
@@ -34,40 +40,63 @@
     </div>
     <h5>Isi Surat</h5>
     <div id="editor"></div>
+    <input type="hidden" name="content" id="content">
     <div class="container">
-    <div class="row">
-        <div class="col">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Peserta (Ceklis jika "ya")</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach ($gurus as $guru)
-    <tr>
-        <td>{{ $guru->name }}</td>
-        <td>
-            <input type="checkbox" name="recipients[]" value="{{ $guru->id }}">
-        </td>
-    </tr>
-@endforeach
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Peserta (Ceklis jika "ya")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($gurus as $guru)
+                        <tr>
+                            <td>{{ $guru->name }}</td>
+                            <td>
+                                <input type="checkbox" name="recipients[]" value="{{ $guru->id }}">
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+    <div class="mb-3 row">
+        <label for="lampiran" class="col-sm-2 col-form-label">Lampiran (Optional)</label>
+        <div class="col-sm-10">
+            <input type="file" class="form-control" id="lampiran" name="lampiran">
+        </div>
+    </div>
+    <div class="mb-3 row">
+    <label for="notulis_id" class="col-sm-2 col-form-label">Notulis</label>
+    <div class="col-sm-10">
+        <select class="form-control" id="notulis_id" name="notulis_id">
+            @foreach($allUsers as $user)
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
+            @endforeach
+        </select>
+    </div>
 </div>
-
     <button type="submit" class="btn btn-primary mt-3">Tambah Data</button>
-    
+
 </form>
 <script src="{{ asset('js/ckeditor.js') }}"></script>
 <script>
-      ClassicEditor
-        .create( document.querySelector( '#editor' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => {
+            editor.model.document.on('change:data', () => {
+                const content = editor.getData();
+                document.querySelector('#content').value = content;
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
+
 @endsection

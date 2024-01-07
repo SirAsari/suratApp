@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Exports\letterTypesExport;
 use App\Models\letterTypes;
 use Illuminate\Http\Request;
-use App\Exports\OrdersExport;
+// use App\Exports\OrdersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class LetterTypesController extends Controller
 {
@@ -22,8 +23,8 @@ class LetterTypesController extends Controller
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('email', 'LIKE', '%' . $search . '%');
+                $q->where('name_type', 'LIKE', '%' . $search . '%')
+                    ->orWhere('letter_code', 'LIKE', '%' . $search . '%');
             });
         }
 
@@ -125,14 +126,26 @@ class LetterTypesController extends Controller
     return redirect()->route('letterType.index')->with('success', 'Data berhasil diubah');
 }
 
-
+public function detail($letter_code)
+{
+    $letterType = letterTypes::where('letter_code', $letter_code)->first();
+    
+    if ($letterType) {
+        $letters = $letterType->letters; 
+        return view('letterTypes.details', compact('letterType', 'letters'));
+    } else {
+        return redirect()->back()->with('error', 'Letter type not found.');
+    }
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(letterTypes $letterTypes)
+    public function destroy($id)
     {
-        //
+        letterTypes::where('id', $id)->delete();
+
+        return redirect()->back()->with('deleted', 'Data berhasil dihapus');
     }
     public function exportExcel()
     {
@@ -142,4 +155,5 @@ class LetterTypesController extends Controller
 
         return $response;
     }
+    
 }

@@ -2,31 +2,29 @@
 
 @section('content')
 
-
-
 <div class="dashboardContainer">
 <div class="jumbotron py-4 px-5">
     <div class="dashboardContainer d-grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));">
         <div class="card bg-primary text-white">
-            <div class="card-header">8</div>
+            <div class="card-header">{{ $SuratKeluar }}</div>
             <div class="card-body">
                 <h5 class="card-title">Surat Keluar</h5>
             </div>
         </div>
         <div class="card bg-primary text-white">
-            <div class="card-header">8</div>
+            <div class="card-header">{{ $KlasifikasiSurat }}</div>
             <div class="card-body">
                 <h5 class="card-title">Klasifikasi Surat</h5>
             </div>
         </div>
         <div class="card bg-primary text-white">
-            <div class="card-header">8</div>
+            <div class="card-header">{{ $UserStaff}}</div>
             <div class="card-body">
                 <h5 class="card-title">Staff Tata Usaha</h5>
             </div>
         </div>
         <div class="card bg-primary text-white">
-            <div class="card-header">8</div>
+            <div class="card-header">{{ $UserGuru }}</div>
             <div class="card-body">
                 <h5 class="card-title">Guru</h5>
             </div>

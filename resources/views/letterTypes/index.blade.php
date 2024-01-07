@@ -10,7 +10,7 @@
 @endif
 <h1 class="h3 mb-5 text-gray-800 mt-5">Data Klasifikasi Surat</h1>
 <a href="{{ route('letterType.create') }}"><button class="btn btn-success mb-4">Tambah Data Klasifikasi Surat</button></a>
-<a href="{{ route('letterType.export-excel') }}" class="btn btn-primary">Export Excel</a>
+<a href="{{ route('letterType.export-excel') }}" class="btn btn-primary mb-4">Export Excel</a>
 <div class="d-flex justify-content-start mb-3">
     <form method="GET" action="{{ route('letterType.index') }}" class="d-flex">
         <input type="text" name="search" placeholder="Cari Data" value="{{ Request::get('search') }}" class="form-control me-2">
@@ -45,7 +45,8 @@
                 <td>{{ $item->letter_code }}</td>
                 <td>{{ $item->name_type }}</td>
                 <td>{{ $item->letters->count() }}</td>  
-             <td class="d-flex justify-content-center">
+                <td class="d-flex justify-content-center">
+                <a href="{{ route('letterType.details', ['letter_code' => $item->letter_code]) }}" class="btn btn-secondary me-3">lihat</a>
                 <a href="{{ route('letterType.edit', $item['id']) }}" class="btn btn-primary me-3">Edit</a>
 
                 <!-- Modal trigger button -->

@@ -15,9 +15,9 @@ class letters extends Model
         'attachment',
     ];
 
-    public function letter_type()
+    public function letterType()
     {
-        return $this->belongsTo(LetterTypes::class, 'letter_type_id');
+        return $this->belongsTo(LetterTypes::class, 'letter_type_id', 'id');
     }
 
     public function users() {
@@ -26,5 +26,9 @@ class letters extends Model
     public function notulis()
     {
         return $this->belongsTo(User::class, 'notulis_id');
+    }
+    public function recipients()
+    {
+        return $this->belongsToMany(User::class, 'letter_recipients', 'letter_id', 'user_id');
     }
 }

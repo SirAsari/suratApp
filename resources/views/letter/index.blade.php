@@ -2,17 +2,15 @@
 
 @section('content')
 
-@if(Session::get('success'))
-    <div class="alert alert-success"> {{ Session::get('success') }} </div>
-@endif
 @if(Session::get('deleted'))
-    <div class="alert alert-warning"> {{ Session::get('deleted') }} </div>
+<div class="alert alert-warning"> {{ Session::get('deleted') }} </div>
 @endif
 <h1 class="h3 mb-5 text-gray-800 mt-5">Data Surat</h1>
 <a href="{{ route('letter.create') }}"><button class="btn btn-success mb-4">Tambah Data</button></a>
+<a href="{{ route('letter.export-excel') }}" class="btn btn-primary mb-4">Export Excel</a>
 <div class="d-flex justify-content-start mb-3">
     <form method="GET" action="{{ route('letter.index') }}" class="d-flex">
-        <input type="text" name="search" placeholder="Search by name or email" value="{{ Request::get('search') }}" class="form-control me-2">
+        <input type="text" name="search" placeholder="Cari Surat" value="{{ Request::get('search') }}" class="form-control me-2">
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
@@ -37,7 +35,7 @@
             <th>Penerima Surat</th>
             <th>Notulis</th>
             <th>Hasil Rapat</th>
-            <th class="text-center">Aksi</th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
@@ -45,11 +43,14 @@
         @foreach ($letters as $item)
         <tr>
             <td>{{ $no++ }}</td>
-            <td>{{ $item['letter_type_id'] }}</td>
+            <td>{{ $item->letterType->letter_code }}/SMK Wikrama/XII/2023</td>
             <td>{{ $item['letter_perihal'] }}</td>
             <td>{{ $item['created_at'] }}</td>
-            <td>{{ $item['recipients'] }}</td>
-            <td>{{ $item['recipients'] }}</td>
+            <td>{{ $item->formatted_recipients }}</td>
+            <td>{{ $item->notulis->name }}</td>
+            <td><p class="text-danger">Belum Dibuat</p></td>
+            <td>
+            </td>
             <td class="d-flex justify-content-center">
                 <a href="{{ route('letter.edit', $item['id']) }}" class="btn btn-primary me-3">Edit</a>
 
@@ -70,7 +71,7 @@
                                 <p>Anda yakin ingin melanjutkan menghapus data ini?</p>
                             </div>
                             <div class="modal-footer">
-                                <form action="{{ route('userDelete', $item['id']) }}" method="POST">
+                                <form action="{{ route('letter.delete', $item['id']) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Ya</button>
@@ -88,7 +89,7 @@
 
 <div class="d-flex justify-content-center">
     @if ($letters->count())
-        {{ $letters->links() }}
+    {{ $letters->links() }}
     @endif
 </div>
 @endsection
